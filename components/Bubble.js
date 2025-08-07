@@ -1,0 +1,36 @@
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+
+export default function Bubble({ x, y, radius }) {
+  return (
+    <View
+      style={[
+        styles.bubble,
+        {
+          left: x,
+          top: y,
+          width: radius * 2,
+          height: radius * 2,
+          borderRadius: radius,
+        },
+      ]}
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  bubble: {
+    position: 'absolute',
+    backgroundColor: '#4CAF50',
+    borderWidth: 2,
+    borderColor: '#66BB6A',
+    shadowColor: '#4CAF50',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+});
