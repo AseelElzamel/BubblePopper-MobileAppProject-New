@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PopEffect from './components/PopEffect';
 import {
   View,
   Text,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 import Bubble from './components/Bubble';
 import Laser from './components/Laser';
+
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -24,6 +26,30 @@ export default function GameScreen() {
   const gameTimerRef = useRef(null);
   const bubbleSpawnerRef = useRef(null);
   const bubbleAnimationRef = useRef(null);
+
+
+  const [popEffects, setPopEffects] = useState([]);
+  const [hitBubbles, setHitBubbles] = useState([]);
+
+  
+  useEffect(() => {
+    if (hitBubbles.length > 0) {
+      setPopEffects(prev => [
+        ...prev,
+        ...hitBubbles.map(b => ({ id: b.id, x: b.x, y: b.y})),
+      ]);
+
+    setTimeout(() => {
+      setPopEffects(prev => 
+        prev.filter(effect => !hitBubbles.some(b => 
+        b.id === effect.id))
+        );
+    },300);
+
+    setHitBubbles([]);
+    }
+  }, [hitBubbles]);
+  
 
   // Start the game
   const startGame = () => {
@@ -123,19 +149,20 @@ export default function GameScreen() {
   // Check if laser hits any bubbles
   const checkLaserHits = (laserX) => {
     setBubbles(prev => {
-      const hitBubbles = [];
+      const hits = [];
       const remainingBubbles = prev.filter(bubble => {
         const distance = Math.abs(bubble.x + bubble.radius - laserX);
         if (distance <= bubble.radius) {
-          hitBubbles.push(bubble);
+          hits.push(bubble);
           return false; // Remove this bubble
         }
         return true; // Keep this bubble
       });
 
       // Update score for each hit
-      if (hitBubbles.length > 0) {
-        setScore(prevScore => prevScore + hitBubbles.length);
+      if (hits.length > 0) {
+        setScore(prevScore => prevScore + hits.length);
+        setHitBubbles(hits);
       }
 
       return remainingBubbles;
@@ -199,6 +226,16 @@ export default function GameScreen() {
           color={bubble.color}
         />
       ))}
+
+    {/* render the pop effects*/}
+    {popEffects.map(effect => (
+      <PopEffect 
+        key={effect.id}
+        x={effect.x}
+        y={effect.y}
+      />
+    ))}
+
 
       {/* Laser */}
       {laser && (

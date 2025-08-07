@@ -16,4 +16,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
+
+  PopEffect: {
+    position: 'absolute',
+    width: 60,
+    height:60,
+    borderRadius: 30,
+    backgroundColor: 'white',
+    opacity: 0.5,
+    transform: [{scale: 1.5}],
+  }
 });
