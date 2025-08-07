@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-export default function Bubble({ x, y, radius }) {
+export default function Bubble({ x, y, radius, color }) {
   return (
     <View
       style={[
@@ -12,6 +12,7 @@ export default function Bubble({ x, y, radius }) {
           width: radius * 2,
           height: radius * 2,
           borderRadius: radius,
+          backgroundColor: color,
         },
       ]}
     />

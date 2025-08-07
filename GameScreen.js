@@ -72,11 +72,17 @@ export default function GameScreen() {
 
   // Spawn a new bubble
   const spawnBubble = () => {
+    const getRandomColor = () => {
+      const colors = ['#00FFFF','#E9967A', '#8FBC8F', '#2196F3', 'FFC107'];
+      return colors[Math.floor(Math.random() * colors.length)];
+  };
+
     const newBubble = {
       id: bubbleIdRef.current++,
       x: Math.random() * (screenWidth - 60), // 60 is bubble diameter
       y: screenHeight - 100,
       radius: 30,
+      color: getRandomColor(),
     };
     
     setBubbles(prev => [...prev, newBubble]);
@@ -190,6 +196,7 @@ export default function GameScreen() {
           x={bubble.x}
           y={bubble.y}
           radius={bubble.radius}
+          color={bubble.color}
         />
       ))}
 
@@ -202,7 +209,7 @@ export default function GameScreen() {
       )}
     </Pressable>
   );
-}
+      }
 
 const styles = StyleSheet.create({
   gameContainer: {
