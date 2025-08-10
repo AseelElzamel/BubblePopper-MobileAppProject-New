@@ -102,7 +102,7 @@ export default function GameScreen() {
   // Spawn a new bubble
   const spawnBubble = () => {
     const getRandomColor = () => {
-      const colors = ['#00FFFF','#E9967A', '#8FBC8F', '#2196F3', 'FFC107'];
+      const colors = ['#DC143C','#00FFFF', '#FFA500', '#6B8E23', '#DDA0DD', '#48D1CC', '#FFFACD'];
       return colors[Math.floor(Math.random() * colors.length)];
   };
 
@@ -186,20 +186,28 @@ export default function GameScreen() {
   // Game Over Screen
   if (gameOver) {
     return (
-      <View style={styles.gameOverContainer}>
+      <ImageBackground
+      source={require('./assets/background1.png')} 
+      style={styles.startContainer}
+      resizeMode="cover"
+    >        
         <Text style={styles.gameOverTitle}>Game Over!</Text>
         <Text style={styles.finalScore}>Final Score: {score}</Text>
         <Pressable style={styles.playAgainButton} onPress={startGame}>
           <Text style={styles.playAgainText}>Play Again</Text>
         </Pressable>
-      </View>
+      </ImageBackground>
     );
   }
 
   // Start Screen
   if (!gameStarted) {
     return (
-      <View style={styles.startContainer}>
+      <ImageBackground
+        source={require('./assets/background1.png')}
+        style={styles.startContainer}
+        resizeMode="cover"
+      >        
         <Text style={styles.title}>Bubble Popper</Text>
         <Text style={styles.instructions}>
           Tap anywhere to shoot lasers and pop bubbles!{'\n'}
@@ -208,7 +216,7 @@ export default function GameScreen() {
         <Pressable style={styles.startButton} onPress={startGame}>
           <Text style={styles.startButtonText}>Start Game</Text>
         </Pressable>
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -216,7 +224,7 @@ export default function GameScreen() {
   return (
     //adding background image
     <ImageBackground
-    source={require('./assets/background.png')}
+    source={require('./assets/background1.png')}
     style={styles.gameContainer}
     resizeMode="cover"  
     >
@@ -238,14 +246,14 @@ export default function GameScreen() {
           />
         ))}
 
-      {/* render the pop effects*/}
-      {popEffects.map(effect => (
-        <PopEffect 
-          key={effect.id}
-          x={effect.x}
-          y={effect.y}
-        />
-      ))}
+        {/* render the pop effects*/}
+        {popEffects.map(effect => (
+          <PopEffect 
+            key={effect.id}
+            x={effect.x}
+            y={effect.y}
+          />
+        ))}
 
 
         {/* Laser */}
@@ -269,6 +277,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover', // to make image the full screen
   },
+
   overlay: {
     flex: 1,
     position: 'relative',
@@ -279,6 +288,7 @@ const styles = StyleSheet.create({
     //backgroundColor: '#ADD8E6',
     position: 'relative',
   },
+
   hud: {
     position: 'absolute',
     top: 50,
@@ -288,74 +298,105 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     zIndex: 1000,
   },
+
   scoreText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 35,
     fontWeight: 'bold',
+    fontFamily: 'LuckiestGuy_400Regular',
+
   },
+
   timerText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 35,
     fontWeight: 'bold',
+    fontFamily: 'LuckiestGuy_400Regular',
+
   },
+
   startContainer: {
     flex: 1,
-    backgroundColor: '#001122',
+    //backgroundColor: '#001122',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
+
   title: {
-    color: '#fff',
-    fontSize: 32,
+    color: '#DAA520',
+    fontSize: 90,
     fontWeight: 'bold',
     marginBottom: 20,
+    fontFamily: 'LuckiestGuy_400Regular',
+    textAlign: 'center',
+    textShadowColor: '#F0E68C',  
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 3,
   },
+
   instructions: {
-    color: '#ccc',
+    color: '#483D8B',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 40,
     lineHeight: 24,
+    fontFamily: 'LuckiestGuy_400Regular',
   },
+
   startButton: {
     backgroundColor: '#4CAF50',
     paddingHorizontal: 30,
     paddingVertical: 15,
     borderRadius: 25,
   },
+
   startButtonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'LuckiestGuy_400Regular',
+
   },
+
   gameOverContainer: {
     flex: 1,
-    backgroundColor: '#001122',
+    //backgroundColor: '#001122',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
+
   gameOverTitle: {
     color: '#ff4444',
-    fontSize: 36,
+    fontSize: 60,
     fontWeight: 'bold',
     marginBottom: 20,
+    fontFamily: 'LuckiestGuy_400Regular',
+    textShadowColor: '#B22222',  
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 3,
   },
+
   finalScore: {
-    color: '#fff',
-    fontSize: 24,
+    color: '#483D8B',
+    fontSize: 30,
     marginBottom: 40,
+    fontFamily: 'LuckiestGuy_400Regular',
   },
+
   playAgainButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#32CD32',
     paddingHorizontal: 30,
     paddingVertical: 15,
-    borderRadius: 25,
+    borderRadius: 10,
   },
+
   playAgainText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: 'bold',
+    fontFamily: 'LuckiestGuy_400Regular',
   },
+
 });
