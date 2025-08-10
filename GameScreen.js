@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import Bubble from './components/Bubble';
 import Laser from './components/Laser';
+import Gun from './components/Gun';
+import { ImageBackground } from 'react-native';
 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -21,6 +23,7 @@ export default function GameScreen() {
   const [gameOver, setGameOver] = useState(false);
   const [laser, setLaser] = useState(null);
   const [gameStarted, setGameStarted] = useState(false);
+  const [gunX, setGunX] = useState(screenWidth / 2); // to start centered
 
   const bubbleIdRef = useRef(0);
   const gameTimerRef = useRef(null);
@@ -131,14 +134,16 @@ export default function GameScreen() {
 
     const { locationX } = event.nativeEvent;
     
-    // Show laser
+   // Fire laser from tap point
     setLaser({
       x: locationX,
       visible: true,
     });
 
-    // Check for hits
     checkLaserHits(locationX);
+
+    // Move gun to tap point
+    setGunX(locationX);
 
     // Hide laser after 300ms
     setTimeout(() => {
@@ -209,49 +214,69 @@ export default function GameScreen() {
 
   // Game Screen
   return (
-    <Pressable style={styles.gameContainer} onPress={handleTap}>
-      {/* Score and Timer */}
-      <View style={styles.hud}>
-        <Text style={styles.scoreText}>Score: {score}</Text>
-        <Text style={styles.timerText}>Time: {timeLeft}s</Text>
-      </View>
+    //adding background image
+    <ImageBackground
+    source={require('./assets/background.png')}
+    style={styles.gameContainer}
+    resizeMode="cover"  
+    >
+      <Pressable style={styles.gameContainer} onPress={handleTap}>
+        {/* Score and Timer */}
+        <View style={styles.hud}>
+          <Text style={styles.scoreText}>Score: {score}</Text>
+          <Text style={styles.timerText}>Time: {timeLeft}s</Text>
+        </View>
 
-      {/* Bubbles */}
-      {bubbles.map(bubble => (
-        <Bubble
-          key={bubble.id}
-          x={bubble.x}
-          y={bubble.y}
-          radius={bubble.radius}
-          color={bubble.color}
+        {/* Bubbles */}
+        {bubbles.map(bubble => (
+          <Bubble
+            key={bubble.id}
+            x={bubble.x}
+            y={bubble.y}
+            radius={bubble.radius}
+            color={bubble.color}
+          />
+        ))}
+
+      {/* render the pop effects*/}
+      {popEffects.map(effect => (
+        <PopEffect 
+          key={effect.id}
+          x={effect.x}
+          y={effect.y}
         />
       ))}
 
-    {/* render the pop effects*/}
-    {popEffects.map(effect => (
-      <PopEffect 
-        key={effect.id}
-        x={effect.x}
-        y={effect.y}
-      />
-    ))}
 
-
-      {/* Laser */}
-      {laser && (
-        <Laser
-          x={laser.x}
-          visible={laser.visible}
-        />
-      )}
-    </Pressable>
+        {/* Laser */}
+        {laser && (
+          <Laser
+            x={laser.x}
+            visible={laser.visible}
+          />
+        )}
+        
+        {/* Gun */}
+        <Gun x={gunX} />
+        
+      </Pressable>
+    </ImageBackground>
   );
       }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // to make image the full screen
+  },
+  overlay: {
+    flex: 1,
+    position: 'relative',
+  },
+
   gameContainer: {
     flex: 1,
-    backgroundColor: '#001122',
+    //backgroundColor: '#ADD8E6',
     position: 'relative',
   },
   hud: {
