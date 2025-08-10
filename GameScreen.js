@@ -102,9 +102,11 @@ export default function GameScreen() {
   // Spawn a new bubble
   const spawnBubble = () => {
     const getRandomColor = () => {
-      const colors = ['#DC143C','#00FFFF', '#FFA500', '#6B8E23', '#DDA0DD', '#48D1CC', '#FFFACD'];
+      const colors = ['#DC143C','#00FFFF', '#BDB76B', '#6B8E23', '#DDA0DD', '#48D1CC', '#F08080'];
       return colors[Math.floor(Math.random() * colors.length)];
   };
+
+    const isPowerUp = Math.random() < 0.2; //20 percent chance of popping up
 
     const newBubble = {
       id: bubbleIdRef.current++,
@@ -112,6 +114,8 @@ export default function GameScreen() {
       y: screenHeight - 100,
       radius: 30,
       color: getRandomColor(),
+      color: isPowerUp ? 'gold' : getRandomColor(),
+      type: isPowerUp ? 'powerup' : 'normal',
     };
     
     setBubbles(prev => [...prev, newBubble]);
@@ -166,9 +170,19 @@ export default function GameScreen() {
 
       // Update score for each hit
       if (hits.length > 0) {
-        setScore(prevScore => prevScore + hits.length);
-        setHitBubbles(hits);
-      }
+      //   setScore(prevScore => prevScore + hits.length);
+      //   setHitBubbles(hits);
+      // }
+      hits.forEach(hit => {
+        if (hit.type === 'powerup') {
+          setScore(prevScore => prevScore + 5); // bonus points
+          setTimeLeft(prevTime => prevTime + 5); // extra time
+        } else {
+          setScore(prevScore => prevScore + 1);
+        }
+      });
+      setHitBubbles(hits);
+    }
 
       return remainingBubbles;
     });

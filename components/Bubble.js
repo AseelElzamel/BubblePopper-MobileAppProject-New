@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-export default function Bubble({ x, y, radius, color }) {
+export default function Bubble({ x, y, radius, color, type }) {
   return (
     <View
       style={[
@@ -13,6 +13,12 @@ export default function Bubble({ x, y, radius, color }) {
           height: radius * 2,
           borderRadius: radius,
           backgroundColor: color,
+          // Extra glow only for power-ups
+          shadowColor: type === 'powerup' ? 'yellow' : '#F8F8FF',
+          shadowOpacity: type === 'powerup' ? 0.9 : 0.8,
+          shadowRadius: type === 'powerup' ? 15 : 10,
+          elevation: type === 'powerup' ? 10 : 10, 
+          borderColor: type === 'powerup' ? 'yellow' : '#F8F8FF',
         },
       ]}
     />
